@@ -18,7 +18,8 @@ def main():
     for team_idx, team in enumerate(teams):
         print(f"[ {team_idx + 1} / {len(teams)} ] Looking at roster of '{team['full_name']}'")
 
-        team_roster = commonteamroster.CommonTeamRoster(team_id=team['id']).get_data_frames()[0]
+        team_id = team['id']
+        team_roster = commonteamroster.CommonTeamRoster(team_id=team_id).get_data_frames()[0]
 
         for player_idx, player_row in team_roster.iterrows():
             print(f"\t[ {player_idx + 1} / {len(team_roster)} ] Getting headshot for '{player_row['PLAYER']}'")
@@ -27,7 +28,7 @@ def main():
             headshot_link = f"https://cdn.nba.com/headshots/nba/latest/1040x760/{player_id}.png"
 
             raw_file = get(headshot_link, stream=True)
-            destination_path = f"{os.path.dirname(__file__)}/images/{CURRENT_SEASON}/{player_id}.png"
+            destination_path = f"{os.path.dirname(__file__)}/images/{CURRENT_SEASON}/{player_id}-{team_id}.png"
 
             if raw_file.status_code == 200:
                 print("\t\tHeadshot found")
